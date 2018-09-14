@@ -34,6 +34,13 @@ With this extra step you can easily pull and merge again in the future from this
 Using ``git pull pyproject master`` you can pull and merge the latest from *pyproject* at any time.
 
 
+Dependencies
+~~~~~~~~~~~~
+
+- Python
+- *For building documentation (optional):* sphinx and sphinx_rtd_theme (`pip install sphinx sphinx_rtd_theme`)
+
+
 First Commit
 ------------
 

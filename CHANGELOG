@@ -1,5 +1,7 @@
-Copyright (C) 2017 Alpha Griffin
+Copyright (C) 2017-2018 Alpha Griffin
 @%@~LICENSE~@%@
+
+saw_091418_1 - Incorporating useful changes from the past year.
 
 saw_072617_1 - Add a __main__.py, simple executable script, and "run" Makefile target.
 

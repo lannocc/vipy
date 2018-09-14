@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# Copyright (C) 2017 Alpha Griffin
+# Copyright (C) 2017-2018 Alpha Griffin
 # @%@~LICENSE~@%@
 
 """Alpha Griffin Python setuptools build script.
@@ -28,7 +28,10 @@ Some of this script logic also taken from:
 
 NS      = 'ag'                          # namespace / meta-package folder
 NAME    = 'pyproject'                   # should match source package name in NS folder
-REQUIRE = [ 'sphinx_rtd_theme' ]        # package dependencies
+COMMAND = NAME                          # command name may be different than package name
+REQUIRE = [                             # package dependencies
+            'ag.logging'
+          ]
 
 DESC    = 'Alpha Griffin Starter Python Project'
 TAGS    = 'example utilities'           # space-separated list of keywords
@@ -70,33 +73,45 @@ CLASS   = [
 from setuptools import setup, find_packages, Command
 from codecs import open
 from os.path import join, splitext, dirname
-from os import walk
+from os import sep, walk
 from distutils.dep_util import newer
 
 
-def findversion(root, name):
+def findversion(root, name, up=0):
     '''versioning strategy taken from http://stackoverflow.com/a/7071358/7203060'''
 
     import re
-    vfile = join(root, name, "__version__.py")
+    vfile = join(root.replace('.', sep), name, "__version__.py")
+    for i in range(up):
+        vfile = join('..', vfile)
     vmatch = re.search(r'^__version__ *= *["\']([^"\']*)["\']', open(vfile, "rt").read(), re.M)
     if vmatch:
         version = vmatch.group(1)
-        print ("Found %s version %s" % (name, version))
+        print ("Found %s.%s version %s" % (root, name, version))
         return version
     else:
         raise RuntimeError("Expecting a version string in %s." % (vfile))
 
+
+def findnamespaces(package):
+    ns = []
+
+    dot = package.find('.')
+    while dot > 0:
+        ns.append(package[:dot])
+        dot = package.find('.', dot+1)
+
+    return ns
 
 
 
 if __name__ == '__main__':
 
     setup(
-        name=NAME,
+        name=(NS+'.'+NAME),
         version=findversion(NS, NAME),
         license=LICENSE,
-        namespace_packages=[NS], # home for our libraries
+        namespace_packages=findnamespaces(NS), # home for our libraries
         packages=find_packages(exclude=['tests']),
         author=AUTHOR,
         author_email=EMAIL,
@@ -105,6 +120,7 @@ if __name__ == '__main__':
         url=URL,
         classifiers=CLASS,
         keywords=TAGS,
+        scripts=([ COMMAND ] if COMMAND else None),
 
         # run-time dependencies
         install_requires=REQUIRE,

@@ -1,7 +1,7 @@
-ag
-==
+pyproject
+=========
 
 .. toctree::
    :maxdepth: 4
 
-   ag
+   ag.pyproject

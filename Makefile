@@ -1,4 +1,4 @@
-# Copyright (C) 2017 Alpha Griffin
+# Copyright (C) 2017-2018 Alpha Griffin
 # @%@~LICENSE~@%@
 #
 # A simple make file for any Python project.
@@ -62,6 +62,7 @@ python_clean:
 	rm -rf build
 	rm -rf *.egg-info
 	find . -type d -name __pycache__ | xargs -r rm -r
+	find . -type f -name "*.pyc" | xargs -r rm
 
 
 run:
@@ -71,13 +72,15 @@ install:
 	./setup.py install
 	if [ -d "doc/man" ]; then \
 		install -d /usr/local/share/man/man1; \
-		cp -r doc/man/* /usr/local/share/man/man1; \
+		cp -r doc/man/*.1 /usr/local/share/man/man1; \
+		install -d /usr/local/share/man/man3; \
+		cp -r doc/man/*.3 /usr/local/share/man/man3; \
 	fi
 
 
 
 apidoc:
-	sphinx-apidoc ag -o api
+	sphinx-apidoc --module-first ag -o api
 
 apidoc_clean:
 	rm -rf api
@@ -112,5 +115,4 @@ coverage:
 	$(SPHINXBUILD) -b coverage $(ALLSPHINXOPTS) $(DOCDIR)/coverage
 	@echo "Testing of coverage in the sources finished, look at the " \
 	      "results in $(DOCDIR)/coverage/python.txt."
-
 
