@@ -94,9 +94,9 @@ def main(filename=None):
                     print(c, end='') # FIXME: doesn't work (delete the character)
                     sys.stdout.flush()
 
-            elif c == '\r' or c == '\n':
+            elif c == '\r' or c == b'\r' or c == '\n' or c == b'\n':
                 if len(cmd) > 0:
-                    if cmd == 'q' or cmd == 'q!':
+                    if cmd == 'q' or cmd == b'q' or cmd == 'q!' or cmd == b'q!':
                         return False
 
                 break
@@ -125,23 +125,23 @@ def main(filename=None):
             # TODO: ask to save changes
             break
 
-        elif c == 'h':
+        elif c == 'h' or c == b'h':
             if cur[0] > 0:
                 cur[0] -= 1
 
-        elif c == 'l':
+        elif c == 'l' or c == b'l':
             if cur[0] < vw - 1:
                 cur[0] += 1
 
-        elif c == 'k':
+        elif c == 'k' or c == b'k':
             if cur[1] > 0:
                 cur[1] -= 1
 
-        elif c == 'j':
+        elif c == 'j' or c == b'j':
             if cur[1] < vh - 1:
                 cur[1] += 1
 
-        elif c == ':':
+        elif c == ':' or c == b':':
             quit = not read_command()
             if quit:
                 break
@@ -149,6 +149,7 @@ def main(filename=None):
         else:
             print(oc)
             sys.stdout.flush()
+            time.sleep(1)
 
     cursor.show()
 
