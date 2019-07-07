@@ -1,4 +1,4 @@
 @ECHO off
 
-python -m vipy "%1"
+python -m ag.vipy "%1"
 
