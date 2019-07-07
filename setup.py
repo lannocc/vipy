@@ -32,6 +32,7 @@ COMMAND = NAME                          # command name may be different than pac
 REQUIRE = [                             # package dependencies
             #'ag.logging',
             'cursor',                       # show/hide cursor
+            'termcolor',                    # reverse color
           ]
 
 DESC    = 'An interactive text-mode editor that (partially) mimics the vim editor.'

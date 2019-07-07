@@ -5,6 +5,7 @@ from . import *
 from .terminalsize import get_terminal_size
 
 import cursor
+from termcolor import cprint
 
 import time
 import sys
@@ -54,28 +55,73 @@ def main(filename=None):
                     break
 
                 c = buf[pos[0]][pos[1]]
-                if cur[0] == vcol and cur[1] == vrow:
-                    c = '\033[7m' + c + '\033[m'
-                
+
                 if c == '\r' or c == '\n':
                     continue
 
-                print(c, end='')
+                if cur[0] == vcol and cur[1] == vrow:
+                    #c = '\033[7m' + c + '\033[m'
+                    cprint(c, attrs=["reverse"], end='')
+                else:
+                    print(c, end='')
 
         sys.stdout.flush()
+
+    def read_command():
+        print(':', end='')
+        cursor.show()
+        sys.stdout.flush()
+
+        cmd = ''
+
+        while True:
+            c = read_char()
+            oc = ord(c)
+
+            if oc == 3: # ctrl c
+                return False
+
+            elif oc == 26: # ctrl z
+                # TODO: ask to save changes
+                return False
+
+            elif oc == 27: # escape
+                break
+
+            elif oc == 127: # backspace
+                if len(cmd) > 0:
+                    cmd = cmd[:-1]
+                    print(c, end='') # FIXME: doesn't work (delete the character)
+                    sys.stdout.flush()
+
+            elif c == '\r' or c == '\n':
+                if len(cmd) > 0:
+                    if cmd == 'q' or cmd == 'q!':
+                        return False
+
+                break
+
+            else:
+                #print(oc)
+                print(c, end='')
+                sys.stdout.flush()
+                cmd += c
+
+        cursor.hide()
+        return True
 
 
     while True:
         redraw()
         c = read_char()
-        i = ord(c)
+        oc = ord(c)
 
-        #print("i got it: {} = {}".format(i, c))
+        #print("i got it: {} = {}".format(oc, c))
 
-        if i == 3: # ctrl c
+        if oc == 3: # ctrl c
             break
 
-        elif i == 26: # ctrl z
+        elif oc == 26: # ctrl z
             # TODO: ask to save changes
             break
 
@@ -94,6 +140,11 @@ def main(filename=None):
         elif c == 'j':
             if cur[1] < vh - 1:
                 cur[1] += 1
+
+        elif c == ':':
+            quit = not read_command()
+            if quit:
+                break
 
     cursor.show()
 
