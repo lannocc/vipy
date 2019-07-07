@@ -14,7 +14,7 @@ from sys import argv, exit
 
 filename = None
 
-if len(argv) > 1:
+if len(argv) > 1 and len(argv[1]) > 0:
     if argv[1][0] == '-':
         option = argv[1]
 
