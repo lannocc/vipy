@@ -39,7 +39,7 @@ def main(filename=None):
 
     def redraw():
         clear_screen()
-        pos = [line, 0]
+        pos = [line, -1]
 
         for vrow in range(vh - 1):
             if pos[0] >= len(buf):
