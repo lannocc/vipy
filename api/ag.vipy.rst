@@ -1,10 +1,10 @@
-ag\.pyproject package
-=====================
+ag\.vipy package
+================
 
 Module contents
 ---------------
 
-.. automodule:: ag.pyproject
+.. automodule:: ag.vipy
     :members:
     :undoc-members:
     :show-inheritance:

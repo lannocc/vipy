@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# Copyright (C) 2017-2018 Alpha Griffin
+# Copyright (C) 2017-2019 Alpha Griffin
 # @%@~LICENSE~@%@
 
 """Alpha Griffin Python setuptools build script.
@@ -27,21 +27,21 @@ Some of this script logic also taken from:
 #
 
 NS      = 'ag'                          # namespace / meta-package folder
-NAME    = 'pyproject'                   # should match source package name in NS folder
+NAME    = 'vipy'                        # should match source package name in NS folder
 COMMAND = NAME                          # command name may be different than package name
 REQUIRE = [                             # package dependencies
-            'ag.logging'
+            #'ag.logging'
           ]
 
-DESC    = 'Alpha Griffin Starter Python Project'
-TAGS    = 'example utilities'           # space-separated list of keywords
+DESC    = 'An interactive text-mode editor that (partially) mimics the vim editor.'
+TAGS    = 'utilities'                   # space-separated list of keywords
 
 AUTHOR  = 'lannocc'                     # name or alias of author
 EMAIL   = 'lannocc@alphagriffin.com'    # email of author
 
 URL     = 'http://alphagriffin.com'
-LICENSE = 'AG'                          # type of license
-COPY    = '2017 Alpha Griffin'          # copyright
+LICENSE = 'MIT'                         # type of license
+COPY    = '2019 Alpha Griffin'          # copyright
 
 CLASS   = [
     # @see https://pypi.python.org/pypi?%3Aaction=list_classifiers
@@ -73,7 +73,7 @@ CLASS   = [
 from setuptools import setup, find_packages, Command
 from codecs import open
 from os.path import join, splitext, dirname
-from os import sep, walk
+from os import sep, walk, name as osname
 from distutils.dep_util import newer
 
 
@@ -120,7 +120,7 @@ if __name__ == '__main__':
         url=URL,
         classifiers=CLASS,
         keywords=TAGS,
-        scripts=([ COMMAND ] if COMMAND else None),
+        scripts=([ COMMAND + ('.bat' if osname == 'nt' else '') ] if COMMAND else None),
 
         # run-time dependencies
         install_requires=REQUIRE,

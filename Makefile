@@ -66,7 +66,7 @@ python_clean:
 
 
 run:
-	./pyproject
+	./vipy
 
 install:
 	./setup.py install

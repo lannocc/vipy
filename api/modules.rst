@@ -1,7 +1,7 @@
-pyproject
-=========
+vipy
+====
 
 .. toctree::
    :maxdepth: 4
 
-   ag.pyproject
+   ag.vipy
