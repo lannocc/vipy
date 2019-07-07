@@ -72,7 +72,7 @@ def main(filename=None):
         cursor.show()
         sys.stdout.flush()
 
-        cmd = ''
+        cmd = None
 
         while True:
             c = read_char()
@@ -95,7 +95,7 @@ def main(filename=None):
                     sys.stdout.flush()
 
             elif c == '\r' or c == b'\r' or c == '\n' or c == b'\n':
-                if len(cmd) > 0:
+                if cmd and len(cmd) > 0:
                     if cmd == 'q' or cmd == b'q' or cmd == 'q!' or cmd == b'q!':
                         return False
 
@@ -105,7 +105,11 @@ def main(filename=None):
                 #print(oc)
                 print(c, end='')
                 sys.stdout.flush()
-                cmd += c
+
+                if cmd:
+                    cmd += c
+                else:
+                    cmd = c
 
         cursor.hide()
         return True
@@ -147,7 +151,7 @@ def main(filename=None):
                 break
 
         else:
-            print(oc)
+            print('?????? {}'.format(oc))
             sys.stdout.flush()
             time.sleep(1)
 
