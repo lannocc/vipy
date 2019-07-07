@@ -61,7 +61,7 @@ def main(filename=None):
 
                 if cur[0] == vcol and cur[1] == vrow:
                     #c = '\033[7m' + c + '\033[m'
-                    cprint(c, attrs=["reverse"], end='')
+                    cprint(c, color='magenta', attrs=["reverse"], end='')
                 else:
                     print(c, end='')
 
