@@ -30,7 +30,8 @@ NS      = 'ag'                          # namespace / meta-package folder
 NAME    = 'vipy'                        # should match source package name in NS folder
 COMMAND = NAME                          # command name may be different than package name
 REQUIRE = [                             # package dependencies
-            #'ag.logging'
+            #'ag.logging',
+            'cursor',                       # show/hide cursor
           ]
 
 DESC    = 'An interactive text-mode editor that (partially) mimics the vim editor.'

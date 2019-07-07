@@ -35,5 +35,5 @@ if len(argv) > 1 and len(argv[1]) > 0:
         filename = argv[1]
 
 from .editor import main
-main()
+main(filename=filename)
 

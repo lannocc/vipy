@@ -1,6 +1,8 @@
 Copyright (C) 2019 Alpha Griffin
 @%@~LICENSE~@%@
 
+saw_070719_1 - Cursor movement with the h, j, k, and l keys.
+
 saw_070619_4 - Get terminal size.
 
 saw_070619_3 - Clear the screen.
