@@ -102,10 +102,10 @@ def main(filename=None):
                 break
 
             else:
-                #print(oc)
-                print(c, end='')
+                print(oc)
+                #print(c, end='')
                 sys.stdout.flush()
-                cmd += c
+                #cmd += c
 
         cursor.hide()
         return True
