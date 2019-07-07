@@ -1,10 +1,12 @@
 # Copyright (C) 2019 Alpha Griffin
 # @%@~LICENSE~@%@
 
-from . import read_char
+from . import *
 
 def main():
     print("here we go")
+
+    clear_screen()
 
     while True:
         c = read_char()

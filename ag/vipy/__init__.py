@@ -15,10 +15,10 @@ that (partially) mimics the vim editor.
 from .__version__ import __version__
 
 
+import os
+import sys
 
 def _read_char():
-    import sys
-
     try:
         import termios
 
@@ -46,4 +46,11 @@ def _read_char():
     return getch
 
 read_char = _read_char()
+
+
+def clear_screen():
+    if os.name == 'nt':
+        os.system("cls")
+    else:
+        os.system("clear")
 
