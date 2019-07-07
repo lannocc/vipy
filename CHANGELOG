@@ -1,6 +1,8 @@
 Copyright (C) 2019 Alpha Griffin
 @%@~LICENSE~@%@
 
+saw_070719_4 - Using cursor color as well since inverse mode wasn't working on my configuration.
+
 saw_070719_3 - Command mode working on Windows now.
 
 saw_070719_2 - Command mode and quit command. Try using termcolor for inverse video on Windows.
