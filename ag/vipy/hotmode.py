@@ -2,6 +2,7 @@
 # @%@~LICENSE~@%@
 
 from .commands import read_command
+from .navigation import navigate
 from .termio import read_char
 
 
