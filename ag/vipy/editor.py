@@ -129,6 +129,11 @@ def main(filename=None):
             # TODO: ask to save changes
             break
 
+        elif c == ':' or c == b':':
+            quit = not read_command()
+            if quit:
+                break
+
         elif c == 'h' or c == b'h':
             if cur[0] > 0:
                 cur[0] -= 1
@@ -145,10 +150,8 @@ def main(filename=None):
             if cur[1] < vh - 1:
                 cur[1] += 1
 
-        elif c == ':' or c == b':':
-            quit = not read_command()
-            if quit:
-                break
+        elif c == '0' or c == b'0':
+            cur[0] = 0
 
         else:
             print('?????? {}'.format(oc))
