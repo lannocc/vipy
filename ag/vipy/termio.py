@@ -1,14 +1,60 @@
-#!/usr/bin/env python
-#
-# This code originally taken from https://gist.github.com/jtriley/1108174
+# Copyright (C) 2019 Alpha Griffin
+# @%@~LICENSE~@%@
 
 import os
+import sys
+
+
+def _read_char():
+    try:
+        import termios
+
+    except ImportError:
+        # Non-POSIX; assume Windows
+        import msvcrt
+        return msvcrt.getch
+
+    # POSIX
+    import tty
+
+    def getch():
+        fd = sys.stdin.fileno()
+        settings = termios.tcgetattr(fd)
+
+        try:
+            tty.setraw(fd)
+            char = sys.stdin.read(1)
+
+        finally:
+            termios.tcsetattr(fd, termios.TCSADRAIN, settings)
+
+        return char
+
+    return getch
+
+read_char = _read_char()
+
+
+def clear_screen():
+    if os.name == 'nt':
+        os.system("cls")
+    else:
+        os.system("clear")
+
+
+
+
+#
+# The following code originally taken from:
+#   https://gist.github.com/jtriley/1108174
+#
+
 import shlex
 import struct
 import platform
 import subprocess
  
- 
+
 def get_terminal_size():
     """ getTerminalSize()
      - get width and height of console
@@ -90,4 +136,4 @@ def _get_terminal_size_linux():
 if __name__ == "__main__":
     sizex, sizey = get_terminal_size()
     print('width = {} height = {}'.format(sizex, sizey))
-
+ 

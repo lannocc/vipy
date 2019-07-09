@@ -1,6 +1,8 @@
 Copyright (C) 2019 Alpha Griffin
 @%@~LICENSE~@%@
 
+saw_070919_1 - Organizing the code into separate files; no new features.
+
 saw_070719_4 - Using cursor color as well since inverse mode wasn't working on my configuration.
 
 saw_070719_3 - Command mode working on Windows now.

@@ -34,6 +34,8 @@ if len(argv) > 1 and len(argv[1]) > 0:
     else:
         filename = argv[1]
 
-from .editor import main
-main(filename=filename)
+
+from . import run
+
+run(filename=filename)
 

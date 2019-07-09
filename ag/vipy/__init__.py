@@ -12,45 +12,31 @@ that (partially) mimics the vim editor.
 .. moduleauthor:: Shawn Wilson <lannocc@alphagriffin.com>
 """
 
+from .viewer import View
+from .hotmode import read_action
 from .__version__ import __version__
 
-
-import os
-import sys
-
-def _read_char():
-    try:
-        import termios
-
-    except ImportError:
-        # Non-POSIX; assume Windows
-        import msvcrt
-        return msvcrt.getch
-
-    # POSIX
-    import tty
-
-    def getch():
-        fd = sys.stdin.fileno()
-        settings = termios.tcgetattr(fd)
-
-        try:
-            tty.setraw(fd)
-            char = sys.stdin.read(1)
-
-        finally:
-            termios.tcsetattr(fd, termios.TCSADRAIN, settings)
-
-        return char
-
-    return getch
-
-read_char = _read_char()
+import cursor
 
 
-def clear_screen():
-    if os.name == 'nt':
-        os.system("cls")
-    else:
-        os.system("clear")
+def run(filename=None):
+    print("vipy {} startup".format(__version__))
+    cursor.hide()
+
+    view = View()
+
+    # load file into buffer, if specified
+    if filename:
+        view.load(filename)
+
+    # FIXME: debug
+    #time.sleep(1)
+
+    while True:
+        view.draw()
+
+        if not read_action(view):
+            break
+
+    cursor.show()
 
