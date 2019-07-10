@@ -1,6 +1,8 @@
 Copyright (C) 2019 Alpha Griffin
 @%@~LICENSE~@%@
 
+saw_071019_1 - Now have a color scheme for tabs, carriage return, newline, and blank areas.
+
 saw_070919_1 - Organizing the code into separate files; no new features.
 
 saw_070719_4 - Using cursor color as well since inverse mode wasn't working on my configuration.

@@ -5,6 +5,9 @@ from .commands import read_command
 from .navigation import navigate
 from .termio import read_char
 
+import sys
+import time
+
 
 def read_action(view):
     c = read_char()

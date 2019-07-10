@@ -22,8 +22,30 @@ def navigate(view, c):
     elif c == '0' or c == b'0':
         view.cur[0] = 0
 
+    elif c == 'w' or c == b'w':
+        pos = next_word(view)
+        if pos:
+            view.cur = pos
+
     else:
         return False
 
     return True
+
+'''
+def next_word(view):
+    pos = view.cur
+
+    if pos[1] >= len(view.buf):
+        return None
+
+    while pos[1] < len(view.buf):
+        line = view.buf[pos[1]]
+        width = view.get_print_width(line)
+
+        if pos[0] >= width:
+
+        c = view.buf[pos[1]][pos[0]]
+        while pos[0] < width:
+'''
 
