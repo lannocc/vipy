@@ -30,10 +30,14 @@ def read_command():
             break
 
         elif oc == 127: # backspace
-            if len(cmd) > 0:
-                cmd = cmd[:-1]
-                print(c, end='') # FIXME: doesn't work (delete the character)
-                sys.stdout.flush()
+            if not cmd:
+                break
+
+            cmd = cmd[:-1]
+            #print(c, end='') # FIXME: doesn't work (delete the character)
+            print('\r:{} '.format(cmd), end='') # this blanks the previous character
+            print('\r:{}'.format(cmd), end='') # this resets cursor position
+            sys.stdout.flush()
 
         elif c == '\r' or c == b'\r' or c == '\n' or c == b'\n':
             if cmd and len(cmd) > 0:
