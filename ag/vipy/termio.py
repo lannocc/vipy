@@ -109,10 +109,13 @@ if os.name == 'nt':
      
     COORD._fields_ = [("X", c_short), ("Y", c_short)]
      
-    def win_print_at(row, col, text):
+    def win_print_at(row, col, text, end='\n'):
         h = windll.kernel32.GetStdHandle(STD_OUTPUT_HANDLE)
         windll.kernel32.SetConsoleCursorPosition(h, COORD(col, row))
-     
+
+        if end:
+            text += end
+
         c = text.encode("windows-1252")
         windll.kernel32.WriteConsoleA(h, c_char_p(c), len(c), None, None)
 
