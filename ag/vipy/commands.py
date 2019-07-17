@@ -1,17 +1,16 @@
 # Copyright (C) 2019 Alpha Griffin
 # @%@~LICENSE~@%@
 
-from .termio import read_char
-
-import cursor
+from .termio import (
+        read_char,
+        hide_cursor, show_cursor )
 
 import sys
 
 
-def read_command():
-    print(':', end='')
-    cursor.show()
-    sys.stdout.flush()
+def read_command(view):
+    view.set_status(':')
+    show_cursor()
 
     cmd = None
 
@@ -34,10 +33,7 @@ def read_command():
                 break
 
             cmd = cmd[:-1]
-            #print(c, end='') # FIXME: doesn't work (delete the character)
-            print('\r:{} '.format(cmd), end='') # this blanks the previous character
-            print('\r:{}'.format(cmd), end='') # this resets cursor position
-            sys.stdout.flush()
+            view.set_status(':{}'.format(cmd))
 
         elif c == '\r' or c == b'\r' or c == '\n' or c == b'\n':
             if cmd and len(cmd) > 0:
@@ -47,16 +43,15 @@ def read_command():
             break
 
         else:
-            #print(oc)
-            print(c, end='')
-            sys.stdout.flush()
-
             if cmd:
                 cmd += c
             else:
                 cmd = c
 
-    cursor.hide()
-    return True
+            view.set_status(':{}'.format(cmd))
 
+    hide_cursor()
+    view.clear_status()
+
+    return True
 

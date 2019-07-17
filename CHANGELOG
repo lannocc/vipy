@@ -1,6 +1,9 @@
 Copyright (C) 2019 Alpha Griffin
 @%@~LICENSE~@%@
 
+saw_071619_1 - No more dependencies! Beginning to draw the screen more efficiently. Buffer is now
+               an object separate from View.
+
 saw_071019_2 - Working backspace while in command input mode.
 
 saw_071019_1 - Now have a color scheme for tabs, carriage return, newline, and blank areas.

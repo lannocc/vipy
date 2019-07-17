@@ -1,14 +1,17 @@
 # Copyright (C) 2019 Alpha Griffin
 # @%@~LICENSE~@%@
 
-from .termio import clear_screen, get_terminal_size
-
-from termcolor import cprint
+from .termio import (
+        clear_screen,
+        hide_cursor, show_cursor,
+        print_at,
+        get_terminal_size,
+        cprint )
 
 import sys
 
 
-class View(object):
+class TerminalView():
 
     TAB_WIDTH = 4
 
@@ -29,54 +32,27 @@ class View(object):
         self.width, self.height = get_terminal_size()
         print("width = {}, height = {}".format(self.width, self.height))
 
-        # all text is buffered to memory
-        self.buf = []
+        self.rows = []      # lines currently visible
+        #self.buf = buf      # the full content buffer
+        self.cursor = [0,0] # screen cursor [row,col]
+        self.status = ''    # status text (bottom of screen area)
 
-        # current displayed buffer line (top of viewport)
-        self.line = 0
-
-        # current cursor position in viewport (x,y)
-        self.cur = [0, 0]
-
-    def load(self, filename):
-        print("reading file: {}".format(filename))
-        with open(filename, 'r') as f:
-            self.buf = f.readlines()
-            self.reform()
-
-    def reform(self, from_line=0):
-        row = from_line
-
-        while row < len(self.buf):
-            line = self.buf[row]
-
-            while len(line) >= self.width:
-                self.buf.insert(row, line[:self.width])
-                line = line[self.width:]
-                row += 1
-
-            self.buf[row] = line
-            row += 1
-
-    def get_print_width(self, line):
-        w = 0
-
-        for c in line:
-            if c == '\t' or c == b'\t':
-                w += self.TAB_WIDTH - (w % self.TAB_WIDTH)
-            else:
-                w += 1
-
-        return w
-
-    def draw(self):
+    def refresh(self):
+        hide_cursor()
         clear_screen()
-        pos = [self.line, 0]
+
+        # the content buffer must conform to our view size and settings
+        #self.buf.reform(self)
+
+        self.print_all()
+
+    def print_all(self):
+        #for row in self.rows:
+        #    print(row, end='')
 
         for vrow in range(self.height - 1):
-            vcol = 0
 
-            while vcol < self.width:
+            for vcol in range(self.width):
                 c = None
                 cursor = False
 
@@ -84,10 +60,10 @@ class View(object):
                 bgcolor = self.BGCOLOR_NORMAL
                 attrs = None
 
-                if pos[0] < len(self.buf) and pos[1] < len(self.buf[pos[0]]):
-                    c = self.buf[pos[0]][pos[1]]
+                if vrow < len(self.rows) and vcol < len(self.rows[vrow]):
+                    c = self.rows[vrow][vcol]
 
-                if self.cur[0] == vcol and self.cur[1] == vrow:
+                if self.cursor[0] == vcol and self.cursor[1] == vrow:
                     cursor = True
                     color = self.COLOR_CURSOR
                     #bgcolor = self.BGCOLOR_CURSOR
@@ -103,8 +79,8 @@ class View(object):
 
                 elif c == '\t' or c == b'\t':
                     bgcolor = self.COLOR_TAB
-                    remains = ''.join([' ' for x in range(self.TAB_WIDTH - (vcol % self.TAB_WIDTH) - 1)])
-                    c = ('t' if cursor else ' ') + remains
+                    #remains = ''.join([' ' for x in range(self.TAB_WIDTH - (vcol % self.TAB_WIDTH) - 1)])
+                    c = ('t' if cursor else ' ') #+ remains
 
                 elif not c:
                     bgcolor = self.COLOR_NO_TEXT
@@ -115,12 +91,48 @@ class View(object):
                 else:
                     print(c, end='')
 
-                vcol += len(c)
-                pos[1] += 1
+        sys.stdout.flush()
 
-            print()
-            pos[0] += 1
-            pos[1] = 0
+    def set_status(self, text):
+        row = self.height
+        diff = len(self.status) - len(text)
+        end = ' ' * diff if diff > 0 else ''
+
+        print_at(row, 0, text, end=end)
+
+        if diff > 0:
+            # reset terminal cursor position
+            print_at(row, len(text) + 1, '', end='')
 
         sys.stdout.flush()
+        self.status = text
+
+    def clear_status(self):
+        self.set_status('')
+
+    def build_row(self, text, start=0):
+        row = ''
+        col = 0
+
+        for i in range(start, len(text)):
+            c = text[i]
+            row += c
+
+            if c == '\t':
+                size = self.TAB_WIDTH - col % self.TAB_WIDTH
+                col += size # FIXME: check against self.width here too
+
+                if size > 1:
+                    row += ' ' * (size - 1)
+
+            else:
+                col += 1
+
+            if col >= self.width:
+                return row, i + 1
+
+        return row, None
+
+    def close(self):
+        show_cursor()
 

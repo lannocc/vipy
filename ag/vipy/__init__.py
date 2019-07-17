@@ -12,31 +12,28 @@ that (partially) mimics the vim editor.
 .. moduleauthor:: Shawn Wilson <lannocc@alphagriffin.com>
 """
 
-from .viewer import View
-from .hotmode import read_action
 from .__version__ import __version__
+from .buffer import MemoryBuffer
+from .viewer import TerminalView
+from .hotmode import read_action
 
-import cursor
 
 
 def run(filename=None):
-    print("vipy {} startup".format(__version__))
-    cursor.hide()
+    print("vipy v{} startup".format(__version__))
 
-    view = View()
+    buf = MemoryBuffer()
+    view = TerminalView()
 
     # load file into buffer, if specified
     if filename:
-        view.load(filename)
+        buf.load(filename)
+        buf.populate(view)
 
-    # FIXME: debug
-    #time.sleep(1)
+    view.refresh()
 
-    while True:
-        view.draw()
+    while read_action(view):
+        pass
 
-        if not read_action(view):
-            break
-
-    cursor.show()
+    view.close()
 

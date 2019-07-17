@@ -13,8 +13,6 @@ def read_action(view):
     c = read_char()
     oc = ord(c)
 
-    #print("i got it: {} = {}".format(oc, c))
-
     if oc == 3: # ctrl c
         return False
 
@@ -23,16 +21,17 @@ def read_action(view):
         return False
 
     elif c == ':' or c == b':':
-        if not read_command():
+        if not read_command(view):
             return False
 
     elif navigate(view, c):
         pass
 
     else:
-        print('?????? {}'.format(oc))
-        sys.stdout.flush()
+        status = view.status
+        view.set_status('?????? {}'.format(oc))
         time.sleep(1)
+        view.set_status(status)
 
     return True
 
