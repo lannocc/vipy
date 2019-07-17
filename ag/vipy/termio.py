@@ -12,6 +12,35 @@ def clear_screen():
         os.system("clear")
 
 
+def cprint_at(row, col, text='', color=None, on_color=None, attrs=None, end='\n'):
+    print_at(row, col, colored(text, color, on_color, attrs), end=end)
+
+
+'''
+keymode_settings_orig = None
+
+def key_enable():
+    fd = sys.stdin.fileno()
+    keymode_settings_orig = termios.tcgetattr(fd)
+
+    settings = keymode_settings_orig & ~termios.ICANON & ~termios.ECHO
+
+    termios.tcsetattr(fd, termios.TCSAFLUSH, settings)
+
+def key_disable():
+    fd = sys.stdin.fileno()
+    termios.tcsetattr(fd, termios.TCSAFLUSH, keymode_settings_orig)
+
+#def key_hit():
+#    if os.name == 'nt':
+#        return msvcrt.kbhit()
+
+def key_get():
+    pass
+'''
+
+
+
 #
 # The following code originally taken from:
 #   https://stackoverflow.com/questions/5174810/how-to-turn-off-blinking-cursor-in-command-window/10455937#10455937
@@ -51,6 +80,7 @@ def show_cursor():
         sys.stdout.flush()
 
 
+
 #
 # The following code originally taken from:
 #   https://stackoverflow.com/questions/510357/python-read-a-single-character-from-the-user/21659588#21659588
@@ -85,6 +115,8 @@ def _read_char():
 
 '''read_char() is our actual function for export, which has resolved the proper implementation'''
 read_char = _read_char()
+
+
 
 
 #
@@ -214,6 +246,8 @@ def _get_terminal_size_linux():
             return None
     return int(cr[1]), int(cr[0])
  
+
+
 
 #
 # The following code originally from termcolor pypi package:

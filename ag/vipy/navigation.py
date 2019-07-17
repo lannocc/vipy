@@ -4,33 +4,30 @@
 
 def navigate(view, c):
     if c == 'h' or c == b'h':
-        if view.cursor[0] > 0:
-            view.cursor[0] -= 1
+        view.move_left()
 
     elif c == 'l' or c == b'l':
-        if view.cursor[0] < view.width - 1:
-            view.cursor[0] += 1
+        view.move_right()
 
     elif c == 'k' or c == b'k':
-        if view.cursor[1] > 0:
-            view.cursor[1] -= 1
+        view.move_up()
 
     elif c == 'j' or c == b'j':
-        if view.cursor[1] < view.height - 1:
-            view.cursor[1] += 1
+        view.move_down()
 
     elif c == '0' or c == b'0':
-        view.cursor[0] = 0
+        view.cursor[1] = 0
+        view.refresh()
 
     elif c == 'w' or c == b'w':
-        pos = next_word(view)
-        if pos:
-            view.cur = pos
+        #pos = next_word(view)
+        #if pos:
+        #    view.cur = pos
+        pass
 
     else:
         return False
 
-    view.refresh()
     return True
 
 '''

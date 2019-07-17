@@ -2,6 +2,7 @@
 # @%@~LICENSE~@%@
 
 from .commands import read_command
+from .typing import read_input
 from .navigation import navigate
 from .termio import read_char
 
@@ -22,6 +23,10 @@ def read_action(view):
 
     elif c == ':' or c == b':':
         if not read_command(view):
+            return False
+
+    elif c == 'a' or c == b'a' or c == 'i' or c == b'i':
+        if not read_input(view):
             return False
 
     elif navigate(view, c):

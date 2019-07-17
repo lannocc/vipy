@@ -1,6 +1,8 @@
 Copyright (C) 2019 Alpha Griffin
 @%@~LICENSE~@%@
 
+saw_071719_1 - Beginning to introduce "typing" mode. More screen draw improvements.
+
 saw_071619_2 - Add keyword "end" to win_print_at().
 
 saw_071619_1 - No more dependencies! Beginning to draw the screen more efficiently. Buffer is now

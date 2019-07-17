@@ -11,7 +11,7 @@ CONTRIBUTIONS WELCOME: this is a work in progress.
 Why vipy?
 *********
 
-Necessity is the mother of invention. I was working remotely on a Windows machine through SSH that had Python installed, and needed an editor.
+Necessity is the mother of invention. The developer was working remotely on a Windows machine through SSH that had Python installed, and needed an editor.
 
 
 ************
@@ -64,16 +64,20 @@ Navigation
 ----------
 
 Simple screen cursor movement:
+
 - **h** - move left
 - **j** - move down
 - **k** - move up
 - **l** - move right
 
 
-Edit Mode
-=========
+Typing Mode
+===========
 
-Edit mode is accessed through any number of actions. **FIXME**
+Typing mode is accessed through any number of actions:
+
+- **i** - insert
+- **a** - append
 
 
 Command Mode
@@ -82,6 +86,7 @@ Command Mode
 Command mode is accessed by pressing the ':' (colon) key from within hot mode. Return to hot mode by pressing the 'Esc' (escape) key.
 
 Commands include:
+
 - **q** - quit
 
 
