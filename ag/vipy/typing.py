@@ -25,8 +25,11 @@ def read_input(view):
             # TODO: ask to save changes
             return False
 
-        elif oc == 27:
+        elif oc == 27: # escape
             break
+
+        elif oc == 127: # backspace
+            pass
 
         else:
             print(c, end='')

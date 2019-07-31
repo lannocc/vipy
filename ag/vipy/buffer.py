@@ -1,31 +1,44 @@
 # Copyright (C) 2019 Alpha Griffin
 # @%@~LICENSE~@%@
 
+from .presenting import Presentable
+
 
 class MemoryBuffer():
 
     def __init__(self):
-        self.lines = []     # memory buffer of characters by line
-        self.cursor = [0,0] # character cursor [line,index]
+        self.data = []
 
     def load(self, filename):
         print("reading file: {}".format(filename))
 
         with open(filename, 'r') as f:
-            self.lines = f.readlines()
+            self.data = f.read()
 
-    def populate(self, view):
-        rows = []
+    def __iter__(self):
+        return self.presenting()
 
-        for line in self.lines:
-            start = 0
+    def presenting(self, start=0):
+        return self.Iterator(self, start)
 
-            while len(rows) < view.height - 1:
-                row, start = view.build_row(line, start)
-                rows.append(row)
+    class Iterator():
+        def __init__(self, buf, start=0):
+            self.buf = buf
+            self.index = start
 
-                if not start:
-                    break
+        def __next__(self):
+            if self.index >= len(self.buf.data):
+                raise StopIteration
 
-        view.rows = rows
+            p = self.buf.presentable(self.index)
+            self.index += 1
+
+            return p
+
+    def handle_insert(self, view, s):
+        pass
+
+    def presentable(self, index):
+        p = Presentable(index, self.data[index])
+        return p
 

@@ -8,6 +8,7 @@ from .termio import (
         get_terminal_size )
 
 import sys
+import copy
 
 
 class TerminalView():
@@ -34,6 +35,30 @@ class TerminalView():
         self.rows = []      # lines currently visible
         self.cursor = [0,0] # screen cursor [row,col]
         self.status = ''    # status text (bottom of screen area)
+
+    def fill(self, buf):
+        row = []
+
+        for p in buf:
+            row.append(p)
+
+            if len(row) >= self.width or p.c == '\n':
+                self.rows.append(row)
+
+                if len(self.rows) >= self.height - 1:
+                    break
+
+                row = []
+
+            elif p.c == '\t':
+                size = self.TAB_WIDTH - (len(row)-1) % self.TAB_WIDTH
+
+                p = copy.copy(p)
+                p.continuation = True
+
+                while size > 1 and len(row) < self.width:
+                    row.append(p)
+                    size -= 1
 
     def refresh(self):
         hide_cursor()
@@ -88,6 +113,7 @@ class TerminalView():
             self.move_cursor(self.cursor[0] + 1, self.cursor[1])
 
     def refresh_char(self, row, col, move=True):
+        p = None
         c = None
         cursor = False
 
@@ -96,7 +122,8 @@ class TerminalView():
         attrs = None
 
         if row < len(self.rows) and col < len(self.rows[row]):
-            c = self.rows[row][col]
+            p = self.rows[row][col]
+            c = p.c
 
         if self.cursor[0] == row and self.cursor[1] == col:
             cursor = True
@@ -114,7 +141,7 @@ class TerminalView():
 
         elif c == '\t' or c == b'\t':
             bgcolor = self.COLOR_TAB
-            c = ('t' if cursor else ' ')
+            c = 't' if cursor and not p.continuation else ' '
 
         elif not c:
             bgcolor = self.COLOR_NO_TEXT
@@ -131,29 +158,6 @@ class TerminalView():
                 print_at(row+1, col+1, c, end='')
             else:
                 print(c, end='')
-
-    def build_row(self, text, start=0):
-        row = ''
-        col = 0
-
-        for i in range(start, len(text)):
-            c = text[i]
-            row += c
-
-            if c == '\t':
-                size = self.TAB_WIDTH - col % self.TAB_WIDTH
-                col += size # FIXME: check against self.width here too
-
-                if size > 1:
-                    row += ' ' * (size - 1)
-
-            else:
-                col += 1
-
-            if col >= self.width:
-                return row, i + 1
-
-        return row, None
 
     def close(self):
         show_cursor()

@@ -18,7 +18,6 @@ from .viewer import TerminalView
 from .hotmode import read_action
 
 
-
 def run(filename=None):
     print("vipy v{} startup".format(__version__))
 
@@ -28,7 +27,7 @@ def run(filename=None):
     # load file into buffer, if specified
     if filename:
         buf.load(filename)
-        buf.populate(view)
+        view.fill(buf)
 
     view.refresh()
 
